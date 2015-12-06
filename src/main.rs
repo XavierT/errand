@@ -1,7 +1,5 @@
 extern crate ncurses;
 
-use std::fmt;
-
 use ncurses::*;
 
 /// Main function
@@ -21,26 +19,33 @@ fn main(){
 
   ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
 
-  let y = max_y / 2;
-  let x = max_x / 2;
+  // Create 3 windows
+  let width = 30;
 
-  ncurses::wmove(stdscr,y, x);
+  //let story = newwin(max_y - score, max_x, 0,0);
+  //let map = newwin(score, max_x, max_y - score, 0);
+  let story = newwin(max_y, width, 0,0);
+  let map = newwin(max_y, max_x-width, 0, width);
+  ncurses::box_(map,0,0);
+  ncurses::box_(story,0,0);
 
-  /* Print to the back buffer. */
-  ncurses::printw("Hello, world!\n");
-  let s: String = format!("This terminal is of size y:{} x:{}",max_y, max_x);
-  let s_slice:&str = &s[..];
+  /* Print to the map windows. */
+  ncurses::waddstr(map,"Map");
 
-  ncurses::mvprintw(y+1,x,s_slice);
-  /* Print some unicode(Chinese) string. */
-  ncurses::printw("\n我喜欢中国茶");
+  /* Print to the map windows. */
+  ncurses::waddstr(story, "Story");
 
   /* Update the screen. */
-  ncurses::refresh();
+  wrefresh(stdscr);  //--> still need to refresh the whole screen
+
+  ncurses::wrefresh(map);
+  ncurses::wrefresh(story);
 
   /* Wait for a key press. */
   ncurses::getch();
 
   /* Terminate ncurses. */
+  delwin(map);
+  delwin(story);
   ncurses::endwin();
 }
