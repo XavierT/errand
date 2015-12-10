@@ -5,47 +5,74 @@ use ncurses::*;
 /// Main function
 fn main(){
 
-  let mut max_x : i32 = 0;
-  let mut max_y : i32 = 0;
+    let mut max_x : i32 = 0;
+    let mut max_y : i32 = 0;
 
-  let locale_conf = LcCategory::all;
+    let locale_conf = LcCategory::all;
 
-  // Necessary for utf8 support
-  // before initscr
-  ncurses::setlocale(locale_conf,"");
+    // Necessary for utf8 support
+    // before initscr
+    ncurses::setlocale(locale_conf,"");
+    ncurses::cbreak();
 
-  /* Start ncurses. */
-  ncurses::initscr();
+    /* Start ncurses. */
+    ncurses::initscr();
 
-  ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
+    ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
 
-  // Create 3 windows
-  let width = 30;
+    // Create 3 windows
+    // width of the story column
+    let story_width = 30;
+    let status_height = 3;
 
-  //let story = newwin(max_y - score, max_x, 0,0);
-  //let map = newwin(score, max_x, max_y - score, 0);
-  let story = newwin(max_y, width, 0,0);
-  let map = newwin(max_y, max_x-width, 0, width);
-  ncurses::box_(map,0,0);
-  ncurses::box_(story,0,0);
+    let story = subwin(stdscr,max_y, story_width,
+                       0,0);
+    let map = subwin(stdscr,max_y-status_height, max_x-story_width,
+                     0, story_width);
+    let status = subwin(stdscr,status_height, max_x-story_width,
+                        max_y-status_height, story_width);
+    ncurses::box_(map,0,0);
+    ncurses::box_(story,0,0);
+    //ncurses::box_(status,0,0);
 
-  /* Print to the map windows. */
-  ncurses::waddstr(map,"Map");
+    /* Print to the map windows. */
+    ncurses::waddstr(map,"Map");
 
-  /* Print to the map windows. */
-  ncurses::waddstr(story, "Story");
+    /* Print to the map windows. */
+    ncurses::waddstr(story, "Story");
+    ncurses::waddstr(status,"Status");
 
-  /* Update the screen. */
-  wrefresh(stdscr);  //--> still need to refresh the whole screen
+    /* Update the screen. */
+    ncurses::wrefresh(map);
+    ncurses::wrefresh(story);
+    ncurses::wrefresh(status);
 
-  ncurses::wrefresh(map);
-  ncurses::wrefresh(story);
+    let mut x =  1;
+    let mut y =  1;
 
-  /* Wait for a key press. */
-  ncurses::getch();
+    loop
+    {
+        /* Wait for a key press. */
+        let ch = ncurses::getch();
 
-  /* Terminate ncurses. */
-  delwin(map);
-  delwin(story);
-  ncurses::endwin();
+        if ch  == 'q' as i32
+        {
+            break;
+        }else
+        {
+            ncurses::mvwaddch(map,y,x,ch as u64);
+            x += 1;
+        }
+
+        //ncurses::wrefresh(stdscr);
+        ncurses::wrefresh(map);
+        //ncurses::wrefresh(story);
+    }
+
+    /* Terminate ncurses. */
+    ncurses::delwin(map);
+    ncurses::delwin(story);
+    ncurses::delwin(status);
+    ncurses::endwin();
+
 }
