@@ -10,6 +10,7 @@ pub struct Window {
 
     size_x: i32,
     size_y: i32,
+    boxed: bool,
 
     handle: WINDOW, // ncurses subwin handle
 
@@ -21,6 +22,7 @@ impl Window {
                start_x: i32,
                size_y: i32,
                size_x: i32,
+               boxed: bool,
                renderer: Box<Render>)
                -> Window {
         Window {
@@ -28,6 +30,7 @@ impl Window {
             start_y: start_y,
             size_x: size_x,
             size_y: size_y,
+            boxed: boxed,
             renderer: renderer,
             handle: stdscr, // hack init the subwin to the whole window
         }
@@ -40,38 +43,42 @@ impl Window {
                                       self.start_x + self.size_x,
                                       self.start_y,
                                       self.start_x);
-        ncurses::box_(self.handle, 0, 0);
+        if self.boxed {
+            ncurses::box_(self.handle, 0, 0);
+        }
         // ncurses::waddstr(self.handle, &self.name as str);
     }
 
     pub fn write(&self, text: String) {}
 
-    pub fn refresh(&self) {}
+    pub fn refresh(&mut self) {
+        ncurses::wrefresh(self.handle);
+    }
 }
 
 pub trait Render {
-    fn render();
+    fn render(&self);
 }
 
-struct StoryWin;
-struct MapWin;
-struct StatusWin;
+pub struct StoryWin;
+pub struct MapWin;
+pub struct StatusWin;
 
 impl Render for StoryWin {
-    fn render() {
+    fn render(&self) {
         println!("I am story!");
     }
 }
 
 
 impl Render for MapWin {
-    fn render() {
+    fn render(&self) {
         println!("I'm map!");
     }
 }
 
 impl Render for StatusWin {
-    fn render() {
+    fn render(&self) {
         println!("I'm program");
     }
 }

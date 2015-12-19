@@ -2,6 +2,10 @@ extern crate ncurses;
 
 use ncurses::*;
 
+pub mod gui;
+
+use gui::window::{Window, StoryWin};
+
 /// Main function
 fn main() {
 
@@ -25,7 +29,9 @@ fn main() {
     let story_width = 30;
     let status_height = 3;
 
-    let story = subwin(stdscr, max_y, story_width, 0, 0);
+    let mut story = Window::new(0, 0, max_y, story_width, true, Box::new(StoryWin));
+    story.init();
+
     let map = subwin(stdscr,
                      max_y - status_height,
                      max_x - story_width,
@@ -37,19 +43,20 @@ fn main() {
                         max_y - status_height,
                         story_width);
     ncurses::box_(map, 0, 0);
-    ncurses::box_(story, 0, 0);
+    // ncurses::box_(story, 0, 0);
     // ncurses::box_(status,0,0);
 
     // Print to the map windows.
     ncurses::waddstr(map, "Map");
 
     // Print to the map windows.
-    ncurses::waddstr(story, "Story");
+    // ncurses::waddstr(story, "Story");
     ncurses::waddstr(status, "Status");
 
     // Update the screen.
     ncurses::wrefresh(map);
-    ncurses::wrefresh(story);
+    // ncurses::wrefresh(story);
+    story.refresh();
     ncurses::wrefresh(status);
 
     let mut x = 1;
@@ -73,7 +80,7 @@ fn main() {
 
     // Terminate ncurses.
     ncurses::delwin(map);
-    ncurses::delwin(story);
+    // ncurses::delwin(story);
     ncurses::delwin(status);
     ncurses::endwin();
 
