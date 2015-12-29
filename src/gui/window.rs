@@ -41,37 +41,44 @@ impl Window {
                                       self.start_y,
                                       self.start_x);
         ncurses::box_(self.handle, 0, 0);
-        // ncurses::waddstr(self.handle, &self.name as str);
     }
 
-    pub fn write(&self, text: String) {}
+    pub fn write(&self, text: String) {
+        ncurses::waddstr(self.handle, text.as_ref());
+    }
 
-    pub fn refresh(&self) {}
+    pub fn refresh(&self) {
+        ncurses::wrefresh(self.handle);
+    }
+    
+    pub fn delwin(&self) {
+        ncurses::delwin(self.handle);
+    }
 }
 
 pub trait Render {
-    fn render();
+    fn render(&self);
 }
 
-struct StoryWin;
-struct MapWin;
-struct StatusWin;
+pub struct StoryWin;
+pub struct MapWin;
+pub struct StatusWin;
 
 impl Render for StoryWin {
-    fn render() {
+    fn render(&self) {
         println!("I am story!");
     }
 }
 
 
 impl Render for MapWin {
-    fn render() {
+    fn render(&self) {
         println!("I'm map!");
     }
 }
 
 impl Render for StatusWin {
-    fn render() {
+    fn render(&self) {
         println!("I'm program");
     }
 }
