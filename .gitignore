@@ -4,3 +4,5 @@ target
 *.un~
 #ctags
 tags
+#kdiff3 temporary files
+*.orig
