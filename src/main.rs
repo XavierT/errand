@@ -1,10 +1,9 @@
 extern crate ncurses;
 
-use ncurses::*;
-
 pub mod gui;
 
-use gui::window::{Window, StoryWin};
+use ncurses::*;
+use gui::window::{Window,StoryWin,MapWin,StatusWin};
 
 /// Main function
 fn main() {
@@ -17,10 +16,11 @@ fn main() {
     // Necessary for utf8 support
     // before initscr
     ncurses::setlocale(locale_conf, "");
-    ncurses::cbreak();
 
     // Start ncurses.
     ncurses::initscr();
+    ncurses::cbreak();
+    ncurses::noecho();
 
     ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
 
@@ -29,35 +29,31 @@ fn main() {
     let story_width = 30;
     let status_height = 3;
 
-    let mut story = Window::new(0, 0, max_y, story_width, true, Box::new(StoryWin));
+    //let story = subwin(stdscr, max_y, story_width, 0, 0);
+    let mut story = Window::new(0,0,
+                              max_y,
+                              story_width,
+                              Box::new(StoryWin));
     story.init();
-
-    let map = subwin(stdscr,
-                     max_y - status_height,
-                     max_x - story_width,
-                     0,
-                     story_width);
-    let status = subwin(stdscr,
-                        status_height,
-                        max_x - story_width,
-                        max_y - status_height,
-                        story_width);
-    ncurses::box_(map, 0, 0);
-    // ncurses::box_(story, 0, 0);
-    // ncurses::box_(status,0,0);
-
+    
+    let mut map = Window::new(0, story_width,
+                              max_y - status_height, max_x - story_width,
+                              Box::new(MapWin));
+    map.init();
+    
+    let mut status = Window::new( max_y - status_height, story_width,
+                                 status_height, max_x - story_width,
+                                Box::new(StatusWin));
+    status.init();
+    
     // Print to the map windows.
-    ncurses::waddstr(map, "Map");
-
-    // Print to the map windows.
-    // ncurses::waddstr(story, "Story");
-    ncurses::waddstr(status, "Status");
+    map.write("Map".to_string());
+    status.write("Status".to_string());
 
     // Update the screen.
-    ncurses::wrefresh(map);
-    // ncurses::wrefresh(story);
+    map.refresh();
     story.refresh();
-    ncurses::wrefresh(status);
+    status.refresh();
 
     let mut x = 1;
     let mut y = 1;
@@ -69,19 +65,22 @@ fn main() {
         if ch == 'q' as i32 {
             break;
         } else {
-            ncurses::mvwaddch(map, y, x, ch as u64);
+            //ncurses::mvwaddch(map, y, x, ch as u64);
+            story.mvaddch(y,x,ch as u64);
+            status.mvaddch(y,x,ch as u64);
+            map.mvaddch(y,x,ch as u64);
             x += 1;
         }
 
-        // ncurses::wrefresh(stdscr);
-        ncurses::wrefresh(map);
-        // ncurses::wrefresh(story);
+        map.refresh();
+        story.refresh();
+        status.refresh();
     }
 
     // Terminate ncurses.
-    ncurses::delwin(map);
-    // ncurses::delwin(story);
-    ncurses::delwin(status);
+    map.delwin();
+    story.delwin();
+    status.delwin();
+    
     ncurses::endwin();
-
 }
