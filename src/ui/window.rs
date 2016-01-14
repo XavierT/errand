@@ -64,11 +64,11 @@ pub trait Render {
     fn render(&self);
 }
 
-pub struct StoryWin;
-pub struct MapWin;
 pub struct StatusWin;
+pub struct MapWin;
+pub struct LogWin;
 
-impl Render for StoryWin {
+impl Render for StatusWin {
     fn render(&self) {
         println!("I am story!");
     }
@@ -81,8 +81,9 @@ impl Render for MapWin {
     }
 }
 
-impl Render for StatusWin {
+impl Render for LogWin {
     fn render(&self) {
-        println!("I'm program");
+        println!("I'm log");
     }
 }
+
