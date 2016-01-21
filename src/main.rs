@@ -20,6 +20,8 @@ fn main() {
     // Start ncurses.
     ncurses::initscr();
     ncurses::cbreak();
+    // Enable some additional keys, like arrow keys, or F1
+    ncurses::keypad(stdscr, true);
     // Do not display typed character in terminal
     ncurses::noecho();
 
@@ -30,7 +32,6 @@ fn main() {
     let status_width = 20;
     let log_height = 5;
 
-    // let status = subwin(stdscr, max_y, status_width, 0, 0);
     let mut status = Window::new(0, 0, max_y, status_width, Box::new(StatusWin));
     status.init();
 
