@@ -4,6 +4,7 @@ pub mod ui;
 
 use ncurses::*;
 use ui::window::{Window, StatusWin, MapWin, LogWin};
+use ui::input::{InputHandler};
 
 /// Main function
 fn main() {
@@ -63,16 +64,24 @@ fn main() {
 
     loop {
         // Wait for a key press.
-        let ch = ncurses::getch();
+        let c : i32 = ncurses::getch();
+        let ch :char = std::char::from_u32(c as u32).unwrap();
 
-        if ch == 'q' as i32 {
+        //if ch == 'q' {
+            //break;
+        //} else {
+            //status.mvaddch(y, x, ch as u64);
+            //log.mvaddch(y, x, ch as u64);
+            //map.mvaddch(y, x, ch as u64);
+            //x += 1;
+        //}
+        
+        let input = InputHandler::new();
+
+        if ch == 'q'{
             break;
-        } else {
-            // ncurses::mvwaddch(map, y, x, ch as u64);
-            status.mvaddch(y, x, ch as u64);
-            log.mvaddch(y, x, ch as u64);
-            map.mvaddch(y, x, ch as u64);
-            x += 1;
+        }else{
+            input.process_key(ch);
         }
 
         map.refresh();
