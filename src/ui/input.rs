@@ -1,6 +1,4 @@
 
-use std::process;
-
 /// Mode of input similar to Vim input mode.
 ///
 /// In each mode the key will have a different meaning
@@ -12,7 +10,7 @@ enum InputMode{
     /// Menu
     Menu,
     /// Yes or no question
-    Yes_or_No,
+    YesOrNo,
     /// Help files
     Help,
 }

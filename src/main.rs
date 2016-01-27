@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 extern crate ncurses;
 
 pub mod ui;
@@ -59,8 +61,8 @@ fn main() {
     status.refresh();
     log.refresh();
 
-    let mut x = 1;
-    let mut y = 1;
+    //let mut x = 1;
+    //let mut y = 1;
 
     loop {
         // Wait for a key press.
@@ -75,7 +77,7 @@ fn main() {
             //map.mvaddch(y, x, ch as u64);
             //x += 1;
         //}
-        
+
         let input = InputHandler::new();
 
         if ch == 'q'{
