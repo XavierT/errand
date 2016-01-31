@@ -4,4 +4,5 @@ version = "0.1.0"
 authors = ["Xavier <sseingalt@gmail.com>"]
 
 [dependencies]
-ncurses = "5.73.0"
+ncurses = "5.80.0"
+log4rs = "0.3.3"
