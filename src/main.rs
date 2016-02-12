@@ -1,6 +1,8 @@
 #![allow(dead_code)]
 
 extern crate ncurses;
+#[macro_use]
+extern crate log;
 
 pub mod ui;
 
@@ -10,6 +12,10 @@ use ui::input::{InputHandler};
 
 /// Main function
 fn main() {
+
+
+    info!("test");
+
 
     let mut max_x: i32 = 0;
     let mut max_y: i32 = 0;

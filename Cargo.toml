@@ -5,4 +5,4 @@ authors = ["Xavier <sseingalt@gmail.com>"]
 
 [dependencies]
 ncurses = "5.80.0"
-log4rs = "0.3.3"
+log = "0.3.*"
