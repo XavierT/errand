@@ -1,4 +1,6 @@
 target
+#log file
+trace.log
 #vim temporary files
 *.swp
 *.un~

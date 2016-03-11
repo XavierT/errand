@@ -5,13 +5,18 @@ extern crate ncurses;
 extern crate log;
 
 pub mod ui;
+pub mod util;
 
 use ncurses::*;
 use ui::window::{Window, StatusWin, MapWin, LogWin};
 use ui::input::{InputHandler};
 
+use util::file_logger::{SimpleLogger};
+
 /// Main function
 fn main() {
+
+    SimpleLogger::init();
 
 
     info!("test");

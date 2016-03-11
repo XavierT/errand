@@ -29,15 +29,15 @@ impl InputHandler{
     pub fn process_key(&self, key: char){
 
         match key {
-            'h' => println!("west"),
-            'j' => println!("south"),
-            'k' => println!("north"),
-            'l' => println!("left"),
-            'y' => println!("left"),
-            'u' => println!("left"),
-            'b' => println!("left"),
-            'n' => println!("left"),
-             _  => println!("error"),
+            'h' => info!("west"),
+            'j' => info!("south"),
+            'k' => info!("north"),
+            'l' => info!("left"),
+            'y' => info!("left"),
+            'u' => info!("left"),
+            'b' => info!("left"),
+            'n' => info!("left"),
+             _  => info!("error"),
         }
 
     }
