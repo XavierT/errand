@@ -9,11 +9,11 @@ use std::sync::{Mutex};
 
 use log::{LogRecord, LogLevel, LogLevelFilter, SetLoggerError, LogMetadata};
 
-pub struct SimpleLogger {
+pub struct SimpleFileLogger {
     logfile: Mutex<Option<File>>,
 }
 
-impl log::Log for SimpleLogger {
+impl log::Log for SimpleFileLogger {
     fn enabled(&self, metadata: &LogMetadata) -> bool {
         metadata.level() <= LogLevel::Info
     }
@@ -40,7 +40,7 @@ impl log::Log for SimpleLogger {
     }
 }
 
-impl SimpleLogger {
+impl SimpleFileLogger {
     pub fn init() -> Result<(), SetLoggerError> {
 
         let path = Path::new("trace.log");
@@ -55,7 +55,7 @@ impl SimpleLogger {
 
         log::set_logger(|max_log_level| {
             max_log_level.set(LogLevelFilter::Info);
-            Box::new(SimpleLogger {
+            Box::new(SimpleFileLogger {
                 logfile: Mutex::new(Some(file))
             })
         })

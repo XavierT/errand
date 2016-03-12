@@ -11,15 +11,16 @@ use ncurses::*;
 use ui::window::{Window, StatusWin, MapWin, LogWin};
 use ui::input::{InputHandler};
 
-use util::file_logger::{SimpleLogger};
+use util::file_logger::{SimpleFileLogger};
 
 /// Main function
 fn main() {
 
-    SimpleLogger::init();
+    //Might need to actually check the return value at some point
+    let _ = SimpleFileLogger::init();
 
 
-    info!("test");
+    info!("Starting...");
 
 
     let mut max_x: i32 = 0;
