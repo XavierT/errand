@@ -23,7 +23,7 @@ impl log::Log for SimpleLogger {
             // println!("{} - {}", record.level(), record.args());
 
             let mut buffer = Vec::new();
-            write!(&mut buffer, "{} - {}", record.level(), record.args());
+            write!(&mut buffer, "{} - {}\n", record.level(), record.args());
 
             let mut file = self.logfile.lock().unwrap();
 
