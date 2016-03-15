@@ -20,9 +20,7 @@ fn timestamp() -> String{
 
     let milli_string = now.tm_nsec /1000 /1000;
 
-    let timestamp = fmt::format(format_args!("{}.{:03}", time_string,  milli_string));
-
-    return timestamp;
+    fmt::format(format_args!("{}.{:03}", time_string,  milli_string))
 }
 
 pub struct SimpleFileLogger {
