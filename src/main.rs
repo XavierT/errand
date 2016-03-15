@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 extern crate ncurses;
+extern crate time;
 #[macro_use]
 extern crate log;
 

@@ -6,3 +6,4 @@ authors = ["Xavier <sseingalt@gmail.com>"]
 [dependencies]
 ncurses = "5.80.0"
 log = "0.3.*"
+time = "0.1.*"

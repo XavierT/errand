@@ -1,13 +1,30 @@
 extern crate log;
+extern crate time;
 
 use std::error::Error;
 use std::fs::File;
 use std::path::Path;
 use std::io::Write;
+use std::fmt;
 
 use std::sync::{Mutex};
 
 use log::{LogRecord, LogLevel, LogLevelFilter, SetLoggerError, LogMetadata};
+use time::{Tm};
+
+fn timestamp() -> String{
+    let now = time::now();
+    let mut time_string = match time::strftime("%F %T", &now){
+                            Ok(S) => S,
+                            Err(_) => "".to_string(),
+    };
+
+    let milli_string = now.tm_nsec /1000 /1000;
+
+    let timestamp = fmt::format(format_args!("{}.{:03}", time_string,  milli_string));
+
+    return timestamp;
+}
 
 pub struct SimpleFileLogger {
     logfile: Mutex<Option<File>>,
@@ -20,10 +37,9 @@ impl log::Log for SimpleFileLogger {
 
     fn log(&self, record: &LogRecord) {
         if self.enabled(record.metadata()) {
-            // println!("{} - {}", record.level(), record.args());
 
             let mut buffer = Vec::new();
-            write!(&mut buffer, "{} - {}\n", record.level(), record.args());
+            write!(&mut buffer, "{} - {} - {}\n", timestamp(), record.level(), record.args());
 
             let mut file = self.logfile.lock().unwrap();
 
@@ -60,4 +76,6 @@ impl SimpleFileLogger {
             })
         })
     }
+
+
 }
