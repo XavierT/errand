@@ -10,12 +10,11 @@ use std::fmt;
 use std::sync::{Mutex};
 
 use log::{LogRecord, LogLevel, LogLevelFilter, SetLoggerError, LogMetadata};
-use time::{Tm};
 
 fn timestamp() -> String{
     let now = time::now();
-    let mut time_string = match time::strftime("%F %T", &now){
-                            Ok(S) => S,
+    let time_string = match time::strftime("%F %T", &now){
+                            Ok(s) => s,
                             Err(_) => "".to_string(),
     };
 
