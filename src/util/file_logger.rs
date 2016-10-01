@@ -36,7 +36,7 @@ impl log::Log for SimpleFileLogger {
         if self.enabled(record.metadata()) {
 
             let mut buffer = Vec::new();
-            write!(&mut buffer, "{} - {} - {}\n", timestamp(), record.level(), record.args());
+            write!(&mut buffer, "{} - {} - {}\n", timestamp(), record.level(), record.args()).unwrap();
 
             let mut file = self.logfile.lock().unwrap();
 
