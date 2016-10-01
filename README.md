@@ -4,8 +4,8 @@ toy rust project
 
 #Installation
 
-The project is linked against the Ncurses library, using the rust wrapper from https://github.com/jeaye/ncurses-rs
-So you need lib ncurses on your system to build.
+The project is linked against the Ncurses library, using the thin wrapper from https://github.com/jeaye/ncurses-rs .
+So you need lib ncurses installed on your system to build.
 
 On Ubuntu, install rust/cargo (tested with rust 1.12)
 
