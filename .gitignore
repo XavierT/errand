@@ -6,5 +6,7 @@ trace.log
 *.un~
 #ctags
 tags
+#rust fmt backup file
+*.rs.bk
 #kdiff3 temporary files
 *.orig
