@@ -7,20 +7,20 @@ use std::path::Path;
 use std::io::Write;
 use std::fmt;
 
-use std::sync::{Mutex};
+use std::sync::Mutex;
 
 use log::{LogRecord, LogLevel, LogLevelFilter, SetLoggerError, LogMetadata};
 
-fn timestamp() -> String{
+fn timestamp() -> String {
     let now = time::now();
-    let time_string = match time::strftime("%F %T", &now){
-                            Ok(s) => s,
-                            Err(_) => "".to_string(),
+    let time_string = match time::strftime("%F %T", &now) {
+        Ok(s) => s,
+        Err(_) => "".to_string(),
     };
 
-    let milli_string = now.tm_nsec /1000 /1000;
+    let milli_string = now.tm_nsec / 1000 / 1000;
 
-    fmt::format(format_args!("{}.{:03}", time_string,  milli_string))
+    fmt::format(format_args!("{}.{:03}", time_string, milli_string))
 }
 
 pub struct SimpleFileLogger {
@@ -36,7 +36,12 @@ impl log::Log for SimpleFileLogger {
         if self.enabled(record.metadata()) {
 
             let mut buffer = Vec::new();
-            write!(&mut buffer, "{} - {} - {}\n", timestamp(), record.level(), record.args()).unwrap();
+            write!(&mut buffer,
+                   "{} - {} - {}\n",
+                   timestamp(),
+                   record.level(),
+                   record.args())
+                .unwrap();
 
             let mut file = self.logfile.lock().unwrap();
 
@@ -68,11 +73,7 @@ impl SimpleFileLogger {
 
         log::set_logger(|max_log_level| {
             max_log_level.set(LogLevelFilter::Info);
-            Box::new(SimpleFileLogger {
-                logfile: Mutex::new(Some(file))
-            })
+            Box::new(SimpleFileLogger { logfile: Mutex::new(Some(file)) })
         })
     }
-
-
 }

@@ -10,14 +10,14 @@ pub mod util;
 
 use ncurses::*;
 use ui::window::{Window, StatusWin, MapWin, LogWin};
-use ui::input::{InputHandler};
+use ui::input::InputHandler;
 
-use util::file_logger::{SimpleFileLogger};
+use util::file_logger::SimpleFileLogger;
 
 /// Main function
 fn main() {
 
-    //Might need to actually check the return value at some point
+    // Might need to actually check the return value at some point
     let _ = SimpleFileLogger::init();
 
     info!("Starting...");
@@ -57,10 +57,10 @@ fn main() {
     map.init();
 
     let mut log = Window::new(max_y - log_height,
-                                 status_width,
-                                 log_height,
-                                 max_x - status_width,
-                                 Box::new(LogWin));
+                              status_width,
+                              log_height,
+                              max_x - status_width,
+                              Box::new(LogWin));
     log.init();
 
     // Print to the map windows.
@@ -72,19 +72,19 @@ fn main() {
     status.refresh();
     log.refresh();
 
-    //let mut x = 1;
-    //let mut y = 1;
+    // let mut x = 1;
+    // let mut y = 1;
 
     loop {
         // Wait for a key press.
-        let c : i32 = ncurses::getch();
-        let ch :char = std::char::from_u32(c as u32).unwrap();
+        let c: i32 = ncurses::getch();
+        let ch: char = std::char::from_u32(c as u32).unwrap();
 
         let input = InputHandler::new();
 
-        if ch == 'q'{
+        if ch == 'q' {
             break;
-        }else{
+        } else {
             input.process_key(ch);
         }
 
