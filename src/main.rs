@@ -20,9 +20,7 @@ fn main() {
     //Might need to actually check the return value at some point
     let _ = SimpleFileLogger::init();
 
-
     info!("Starting...");
-
 
     let mut max_x: i32 = 0;
     let mut max_y: i32 = 0;
@@ -81,15 +79,6 @@ fn main() {
         // Wait for a key press.
         let c : i32 = ncurses::getch();
         let ch :char = std::char::from_u32(c as u32).unwrap();
-
-        //if ch == 'q' {
-            //break;
-        //} else {
-            //status.mvaddch(y, x, ch as u64);
-            //log.mvaddch(y, x, ch as u64);
-            //map.mvaddch(y, x, ch as u64);
-            //x += 1;
-        //}
 
         let input = InputHandler::new();
 
