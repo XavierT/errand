@@ -2,7 +2,7 @@
 /// Mode of input similar to Vim input mode.
 ///
 /// In each mode the key will have a different meaning
-enum InputMode{
+pub enum InputMode{
     /// Default game mode
     Default,
     /// Move cursor freely around to identify things
@@ -24,6 +24,10 @@ impl InputHandler{
         InputHandler{
             mode : InputMode::Default,
         }
+    }
+
+    pub fn change_mode(&mut self, new_mode: InputMode ){
+        self.mode = new_mode;
     }
 
     pub fn process_key(&self, key: char){
