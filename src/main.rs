@@ -9,7 +9,7 @@ pub mod ui;
 pub mod util;
 
 use ncurses::*;
-use ui::window::{Window, StatusWin, MapWin, LogWin};
+use ui::window::Window;
 use ui::input::InputHandler;
 
 use util::file_logger::SimpleFileLogger;
@@ -46,21 +46,16 @@ fn main() {
     let status_width = 20;
     let log_height = 5;
 
-    let mut status = Window::new(0, 0, max_y, status_width, Box::new(StatusWin));
+    let mut status = Window::new(0, 0, max_y, status_width);
     status.init();
 
-    let mut map = Window::new(0,
-                              status_width,
-                              max_y - log_height,
-                              max_x - status_width,
-                              Box::new(MapWin));
+    let mut map = Window::new(0, status_width, max_y - log_height, max_x - status_width);
     map.init();
 
     let mut log = Window::new(max_y - log_height,
                               status_width,
                               log_height,
-                              max_x - status_width,
-                              Box::new(LogWin));
+                              max_x - status_width);
     log.init();
 
     // Print to the map windows.

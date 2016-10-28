@@ -12,23 +12,15 @@ pub struct Window {
     size_x: i32,
 
     handle: WINDOW, // ncurses subwin handle
-
-    renderer: Box<Render>,
 }
 
 impl Window {
-    pub fn new(start_y: i32,
-               start_x: i32,
-               size_y: i32,
-               size_x: i32,
-               renderer: Box<Render>)
-               -> Window {
+    pub fn new(start_y: i32, start_x: i32, size_y: i32, size_x: i32) -> Window {
         Window {
             start_y: start_y,
             start_x: start_x,
             size_y: size_y,
             size_x: size_x,
-            renderer: renderer,
             handle: stdscr, // hack init the subwin to the whole window
         }
     }
@@ -53,32 +45,5 @@ impl Window {
 
     pub fn delwin(&self) {
         ncurses::delwin(self.handle);
-    }
-}
-
-pub trait Render {
-    fn render(&self);
-}
-
-pub struct StatusWin;
-pub struct MapWin;
-pub struct LogWin;
-
-impl Render for StatusWin {
-    fn render(&self) {
-        println!("I am story!");
-    }
-}
-
-
-impl Render for MapWin {
-    fn render(&self) {
-        println!("I'm map!");
-    }
-}
-
-impl Render for LogWin {
-    fn render(&self) {
-        println!("I'm log");
     }
 }
