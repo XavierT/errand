@@ -16,18 +16,23 @@ pub struct Window {
 
 impl Window {
     pub fn new(start_y: i32, start_x: i32, size_y: i32, size_x: i32) -> Window {
-        Window {
-            start_y: start_y,
-            start_x: start_x,
-            size_y: size_y,
-            size_x: size_x,
-            handle: stdscr, // hack init the subwin to the whole window
+        unsafe {
+            Window {
+                start_y: start_y,
+                start_x: start_x,
+                size_y: size_y,
+                size_x: size_x,
+                handle: stdscr, // hack init the subwin to the whole window
+            }
         }
     }
 
     pub fn init(&mut self) {
 
-        self.handle = ncurses::subwin(stdscr, self.size_y, self.size_x, self.start_y, self.start_x);
+        unsafe {
+            self.handle =
+                ncurses::subwin(stdscr, self.size_y, self.size_x, self.start_y, self.start_x);
+        }
         ncurses::box_(self.handle, 0, 0);
     }
 

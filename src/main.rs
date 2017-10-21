@@ -35,11 +35,15 @@ fn main() {
     ncurses::initscr();
     ncurses::cbreak();
     // Enable some additional keys, like arrow keys, or F1
-    ncurses::keypad(stdscr, true);
+    unsafe {
+        ncurses::keypad(stdscr, true);
+    }
     // Do not display typed character in terminal
     ncurses::noecho();
 
-    ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
+    unsafe {
+        ncurses::getmaxyx(stdscr, &mut max_y, &mut max_x);
+    }
 
     // Create 3 windows
     // width of the status column
@@ -67,8 +71,6 @@ fn main() {
     status.refresh();
     log.refresh();
 
-    // let mut x = 1;
-    // let mut y = 1;
 
     loop {
         // Wait for a key press.
